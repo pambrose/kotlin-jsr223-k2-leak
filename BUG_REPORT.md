@@ -1,19 +1,5 @@
 # YouTrack report
 
-The text to file at <https://youtrack.jetbrains.com/newIssue?project=KT>. Fill in the fields, then paste
-everything below the line into the description. YouTrack renders Markdown.
-
-| Field | Value |
-|---|---|
-| Project | Kotlin (KT) |
-| Type | Bug |
-| Summary | JSR-223 (K2): each new script state's compiler environment is never disposed, retaining ~24 MB per new ScriptEngine or ScriptContext |
-| Subsystems | Tools. Scripts |
-| Affected versions | 2.4.20, 2.4.21, 2.5.0-Beta1 |
-| Tags | regression |
-
----
-
 Starting with 2.4.20-Beta2, `kotlin-scripting-jsr223` builds a new K2 compiler environment for every script state and never disposes it. A new state is created for each new `ScriptEngine` and for each new `ScriptContext` set on an engine. Every one of them keeps about 24 MB of heap reachable for the life of the JVM, more with a larger classpath, so hosts that create engines or reset contexts run out of memory. 2.4.10 and 2.4.20-Beta1 retain nothing in the same code.
 
 **Reproducer:** https://github.com/pambrose/kotlin-jsr223-k2-leak (plain Java + `javax.script`, `./gradlew minimal` / `./gradlew run` / `./run-matrix.sh`).
